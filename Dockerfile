@@ -11,7 +11,8 @@ RUN apt-get update \
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY snipy ./snipy
+COPY . .
+
 RUN useradd -m sniper && mkdir -p /data && chown -R sniper /data /app
 USER sniper
 
