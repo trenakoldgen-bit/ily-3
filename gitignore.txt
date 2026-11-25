@@ -1,0 +1,9 @@
+config.json
+cache.sqlite3*
+sniper.log*
+cookies/
+proxies.txt
+__pycache__/
+*.pyc
+.venv/
+.env

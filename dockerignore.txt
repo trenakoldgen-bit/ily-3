@@ -1,0 +1,12 @@
+.git
+.github
+config.json
+cache.sqlite3
+cache.sqlite3-wal
+cache.sqlite3-shm
+sniper.log*
+cookies/
+proxies.txt
+__pycache__
+*.pyc
+.venv
