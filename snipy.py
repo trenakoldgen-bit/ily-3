@@ -179,11 +179,12 @@ class Config:
 
         raw["guild_id"] = str(raw.get("guild_id", "")).strip()
         raw["codes"] = [c.lower() for c in raw.get("codes", [])]
+        raw["tokens"] = raw.get("tokens", [])
         raw["daily_request_budget"] = int(raw.get("daily_request_budget", 0))
         raw["max_inflight"] = int(raw.get("max_inflight", 12))
 
         if not raw["guild_id"].isdigit():
-            raise SystemExit("guild_id must be a snowflake")
+            raise SystemExit(f"guild_id must be a snowflake, got {raw['guild_id']!r}")
         if not raw["tokens"]:
             raise SystemExit("no tokens (SNIPY_TOKENS)")
         if not raw["codes"]:
@@ -193,11 +194,13 @@ class Config:
                if not c.replace("-", "").isalnum() or not 2 <= len(c) <= 32]
         if bad:
             raise SystemExit(f"invalid codes: {', '.join(bad)}")
-        if raw["status_max_interval"] < raw["status_min_interval"]:
+
+        cfg = cls(**raw)
+        if cfg.status_max_interval < cfg.status_min_interval:
             raise SystemExit("status_max_interval < status_min_interval")
 
-        Path(raw["cookie_dir"]).mkdir(parents=True, exist_ok=True)
-        return cls(**raw)
+        Path(cfg.cookie_dir).mkdir(parents=True, exist_ok=True)
+        return cfg
 
     def masked(self, token: str) -> str:
         core = token[4:] if token.startswith("Bot ") else token
